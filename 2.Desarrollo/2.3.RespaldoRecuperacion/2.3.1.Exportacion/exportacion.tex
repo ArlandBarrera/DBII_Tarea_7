@@ -1,0 +1,34 @@
+La exportación es el proceso de crear una copia de seguridad de los datos y objetos de tu base de datos. En un sistema como \textbf{Oracle Database} esto se realiza utilizando la utilidad \textbf{\emph{expdp}}.
+
+\begin{enumerate}
+  \item \textbf{Exportar un esquema completo}
+  
+  Este comando exportará todos los objetos (tablas, vistas, índices, procedimientos, etc.) del esquema \textbf{\emph{mi{\textunderscore}usuario}} a un archivo \textbf{\emph{.dmp}}.
+
+  \begin{lstlisting}
+    expdp mi_usuario/mi_contraseña DIRECTORY=mi_directorio DUMPFILE=backup_esquema.dmp SCHEMAS=mi_usuario LOGFILE=backup_esquema.log
+  \end{lstlisting}
+
+  \begin{itemize}
+    \item \textbf{DIRECTORY:} El directorio en el servidor donde se guardará el archivo.
+    \item \textbf{DUMPFILE:} Nombre del archivo de volcado.
+    \item \textbf{SCHEMAS:} Esquema a exportar.
+    \item \textbf{LOGFILE:} Archivo donde se registrarán los detalles de la exportación.
+  \end{itemize}
+
+  \item \textbf{Exportar solo tablas específicas}
+  
+  Si solo se necesitan exportar algunas tablas, se puede usar el parámetro \textbf{\emph{TABLES}}:
+
+  \begin{lstlisting}
+    expdp mi_usuario/mi_contraseña DIRECTORY=mi_directorio DUMPFILE=backup_tablas.dmp TABLES=tabla1,tabla2 LOGFILE=backup_tablas.log
+  \end{lstlisting}
+
+  \item \textbf{Exportar con filtros (\textit{ej.} filas específicas)}
+  
+  Para exportar solo ciertas filas de una tabla:
+
+  \begin{lstlisting}
+    expdp mi_usuario/mi_contraseña DIRECTORY=mi_directorio DUMPFILE=backup_ventas.dmp TABLES=ventas QUERY=ventas:"WHERE fecha > '01-JAN-2024'" LOGFILE=backup_ventas.log
+  \end{lstlisting}
+\end{enumerate}

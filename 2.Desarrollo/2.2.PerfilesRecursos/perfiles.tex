@@ -1,0 +1,67 @@
+Administrar los perfiles de límite de recursos en una base de datos es una buena práctica para asegurar un uso eficiente y controlado de los recursos por parte de los usuarios. Esto es especialmente útil en bases de datos \textbf{\emph{Oracle}}, en las cuales se pueden definir perfiles que restringen ciertos recursos como el uso de CPU, la cantidad de sesiones abiertas, el tiempo de inactividad, y mucho más.
+
+\begin{enumerate}
+  \item \textbf{¿Qué es un perfil de límite de recursos?}
+  
+  Un \textbf{perfil de base de datos} permite definir límites sobre el uso de recursos del sistema para los usuarios. Se puede asignar un perfil a un usuario y así controlar:
+
+  \begin{itemize}
+    \item Uso de CPU y tiempo de sesión.
+    \item Conexiones concurrentes.
+    \item Políticas de contraseñas y bloqueo de cuentas.
+  \end{itemize}
+
+  \item \textbf{Activar la administración de recursos en Oracle}
+  
+  \begin{lstlisting}
+    ALTER SYSTEM SET RESOURCE_LIMIT = TRUE;
+  \end{lstlisting}
+
+  \item \textbf{Crear un perfil personalizado}
+  
+  El siguiente ejemplo crea un perfil llamado \textbf{\emph{mi{\textunderscore}perfil}} que establece límites en el uso de recursos:
+
+  \begin{lstlisting}
+    CREATE PROFILE mi_perfil LIMIT
+    SESSIONS_PER_USER         2                  -- Maximo 2 sesiones por usuario
+    CPU_PER_SESSION           10000              -- Maximo 10,000 unidades de CPU por sesion
+    CPU_PER_CALL              1000               -- Maximo 1,000 unidades de CPU por llamada
+    CONNECT_TIME              60                 -- Maximo 60 minutos de conexion
+    IDLE_TIME                 10                 -- Tiempo inactivo de 10 minutos antes de desconectar
+    FAILED_LOGIN_ATTEMPTS     5                  -- Bloqueo despurs de 5 intentos fallidos
+    PASSWORD_LIFE_TIME        30                 -- La contrasena expira en 30 días
+    PASSWORD_REUSE_TIME       365                -- Reutilizacion de contrasena despues de 1 ano
+    PASSWORD_REUSE_MAX        5                  -- Reutilizar contrasena despues de 5 cambios;
+  \end{lstlisting}
+
+  \item \textbf{Asignar el perfil a un usuario}
+  
+  \begin{lstlisting}
+    ALTER USER usuario1 PROFILE mi_perfil;
+  \end{lstlisting}
+
+  Esto significa que el \textbf{\emph{usuario1}} estará sujeto a las restricciones definidas en \textbf{\emph{mi{\textunderscore}perfil}}.
+
+  \item \textbf{Modificar un perfil existente}
+  
+  \begin{lstlisting}
+    ALTER PROFILE mi_perfil LIMIT
+    IDLE_TIME 15;  -- Aumentar el tiempo inactivo a 15 minutos
+  \end{lstlisting}
+
+  \item \textbf{Eliminar un perfil}
+  
+  \begin{lstlisting}
+    DROP PROFILE mi_perfil CASCADE;
+  \end{lstlisting}
+
+  El uso de \textbf{\emph{CASCADE}} asegura que el perfil se elimine incluso si está asignado a usuarios.
+
+  \item \textbf{Consultar información sobre perfiles}
+  
+  \begin{lstlisting}
+    SELECT PROFILE, RESOURCE_NAME, LIMIT 
+    FROM DBA_PROFILES
+    WHERE PROFILE = 'MI_PERFIL';
+  \end{lstlisting}
+\end{enumerate}

@@ -1,0 +1,37 @@
+La importación es el proceso de restaurar los datos y objetos desde un archivo de exportación previamente creado, en un sitema como \textbf{Oracle Database} esto se puede lograr utilizando textbf{\emph{impdp}}.
+
+\begin{enumerate}
+  \item \textbf{Importar un esquema completo}
+  
+  Este comando importa todos los objetos desde un archivo \textbf{\emph{.dmp}} en el esquema \textbf{\emph{mi{\textunderscore}usuario}}.
+
+  \begin{lstlisting}
+    impdp mi_usuario/mi_contraseña DIRECTORY=mi_directorio DUMPFILE=backup_esquema.dmp SCHEMAS=mi_usuario LOGFILE=import_esquema.log
+  \end{lstlisting}
+
+  \item \textbf{Importar tablas específicas}
+  
+  Restaurar algunas tablas:
+
+  \begin{lstlisting}
+    impdp mi_usuario/mi_contraseña DIRECTORY=mi_directorio DUMPFILE=backup_tablas.dmp TABLES=tabla1,tabla2 LOGFILE=import_tablas.log
+  \end{lstlisting}
+
+  \item \textbf{Importar con remapeo de esquema}
+  
+  Para importar datos a un esquema diferente, puedes usar 
+  
+  \textbf{\emph{REMAP{\textunderscore}SCHEMA}}:
+
+  \begin{lstlisting}
+    impdp mi_usuario/mi_contraseña DIRECTORY=mi_directorio DUMPFILE=backup_esquema.dmp REMAP_SCHEMA=antiguo_usuario:nuevo_usuario LOGFILE=import_remapeo.log
+  \end{lstlisting}
+
+  \item \textbf{Importar solo datos (sin índices, constraints, etc.)}
+  
+  Para importar únicamente los datos sin los objetos adicionales:
+
+  \begin{lstlisting}
+    impdp mi_usuario/mi_contraseña DIRECTORY=mi_directorio DUMPFILE=backup_tablas.dmp CONTENT=DATA_ONLY LOGFILE=import_datos.log
+  \end{lstlisting}
+\end{enumerate}

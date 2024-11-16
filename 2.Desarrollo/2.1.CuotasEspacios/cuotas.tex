@@ -1,0 +1,44 @@
+En muchas ocasiones resulta necesario limitar el espacio de almacenamiento en un servidor atendiendo a diversos criterios, por ejemplo la limitación del espacio disponible para correo electrónico o para albergue de páginas web.
+
+Para limitar las cuotas de espacios de tablas en una base de datos, se pueden utilizar varias estrategias dependiendo del sistema de gestión de bases de datos (SGBD) utilizado. A continuación, se presentan algunas opciones para MySQL y SQL Server:
+
+\textbf{MySQL}
+
+\begin{enumerate}
+  \item \textbf{Asignación de cuotas a una base de datos existente:} Utilizar la sentencia \textbf{\emph{CREATE TABLESPACE}} con la opción \textbf{\emph{QUOTA}} para establecer un límite de espacio para una base de datos específica. Por ejemplo:
+  
+  \begin{lstlisting}
+    CREATE TABLESPACE mydb QUOTA 100M;
+  \end{lstlisting}
+  
+  Esto establece un límite de 100 MB para la base de datos \textbf{\emph{mydb}}.
+
+  \item \textbf{Asignación de cuotas a un usuario:} Utilizar la sentencia \textbf{\emph{CREATE USER}} con la opción \textbf{\emph{QUOTA}} para establecer un límite de espacio para un usuario específico. Por ejemplo:
+
+  \begin{lstlisting}
+    CREATE USER myuser IDENTIFIED BY `mypassword' QUOTA 50M ON mydb;
+  \end{lstlisting}
+
+  Esto establece un límite de 50 MB para el usuario \textbf{\emph{myuser}} en la base de datos \textbf{\emph{mydb}}.
+
+\end{enumerate}
+
+\textbf{SQL SERVER}
+
+\begin{enumerate}
+  \item \textbf{Asignación de cuotas a un usuario:} Utilizar la sentencia \textbf{\emph{CREATE USER}} con la opción \textbf{\emph{QUOTA}} para establecer un límite de espacio para un usuario específico. Por ejemplo:
+
+  \begin{lstlisting}
+    CREATE USER myuser FOR LOGIN = 'mylogin' DEFAULT_TABLESPACE = 'mydb' QUOTA 100MB;
+  \end{lstlisting}
+
+  Esto establece un límite de 100 MB para el usuario \textbf{\emph{myuser}} en la base de datos \textbf{\emph{mydb}}.
+
+  \item \textbf{Configuración de cuotas en el nivel de instancia:} En la configuración de la instancia de SQL Server, se puede establecer un límite de espacio global para todas las bases de datos. Para hacer esto, se necesita el permiso \textbf{\emph{ALTER INSTANCE}} y se utiliza la sentencia \textbf{\emph{ALTER INSTANCE}} con la opción \textbf{\emph{SET MAX{\textunderscore}DATA{\textunderscore}SIZE}}. Por ejemplo:
+  
+  \begin{lstlisting}
+    ALTER INSTANCE SET MAX_DATA_SIZE = 500GB;
+  \end{lstlisting}
+
+  Esto establece un límite de 500 GB para el tamaño total de todas las bases de datos en la instancia de SQL Server.
+\end{enumerate}
